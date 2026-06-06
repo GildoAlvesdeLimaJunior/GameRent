@@ -88,6 +88,7 @@ java -cp bin GameRent.<MainClass>
 
 ## Course
 
-**Object-Oriented Programming** — Universidade Federal do Cariri (UFCA)
-Professor: **Luana Batista da Cruz**
-Juazeiro do Norte – CE, 2026
+- **Course:** Object-Oriented Programming
+- **University:** Universidade Federal do Cariri (UFCA)
+- **Professor:** Luana Batista da Cruz
+- **Location:** Juazeiro do Norte – CE, 2026

@@ -1,18 +1,16 @@
 package GameRent;
 
-public class Cliente {
+public abstract class Cliente {
 	private String nome;
 	private String cpf;
 	private String email;
 	private int idade;
-	private boolean premium;
 	
-	public Cliente(String nome, String cpf, String email, int idade, boolean premium){
+	public Cliente(String nome, String cpf, String email, int idade){
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
 		this.idade = idade;
-		this.premium = premium;
 	}
 
 	public String getNome() {
@@ -31,18 +29,13 @@ public class Cliente {
 		return idade;
 	}
 
-	public boolean isPremium() {
-		return premium;
-	}
-
 	@Override
 	public String toString() {
-		return "Cliente{" +
+		return "Cliente: {" +
 				"nome='" + nome + '\'' +
 				", cpf='" + cpf + '\'' +
 				", email='" + email + '\'' +
 				", idade=" + idade +
-				", premium=" + premium +
 				'}';
 	}
 }

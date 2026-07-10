@@ -38,4 +38,6 @@ public abstract class Cliente {
 				", idade=" + idade +
 				'}';
 	}
+
+	public abstract double calcularDesconto(double valor);
 }

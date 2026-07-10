@@ -6,15 +6,18 @@ public abstract class Jogo {
 	private String genero;
 	private int valordiario;
 	private int classificacao;
-	private int contador;
+	private int contador = 0;
 
-	public Jogo(String nome, String plataforma, String genero, int valordiario, int classificacao, int contador){
+	public Jogo(String nome, String plataforma, String genero, int valordiario, int classificacao){
 		this.nome = nome;
 		this.plataforma = plataforma;
 		this.genero = genero;
 		this.valordiario = valordiario;
 		this.classificacao = classificacao;
-		this.contador = contador;
+	}
+	
+	public void incrementarContador() {
+	    this.contador++;
 	}
 
 	public String getNome() {

@@ -1,20 +1,49 @@
 package GameRent;
 
 public class JogoFisico extends Jogo{
-	private int qntdestoque;
+	private int qtdEstoque;
+	private int qtdAlugado = 0;
 	private int avaria;
 
-	public JogoFisico(String nome, String plataforma, String genero, int qntdestoque, int valorDiario, int classificacao, int avaria){
+	public JogoFisico(String nome, Plataforma plataforma, String genero, int qtdEstoque, int valorDiario, ClassificacaoEtaria classificacao, int avaria){
 		super(nome,plataforma,genero,valorDiario,classificacao);
 
-		this.qntdestoque = qntdestoque;
+		this.qtdEstoque = qtdEstoque;
 		this.avaria = avaria;
 	}
-	public int getQntdestoque() {
-	    return qntdestoque;
+
+	@Override
+	public boolean isDisponivel() {
+		if(qtdEstoque > qtdAlugado){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean alugarUnidade(){
+		if(qtdEstoque > qtdAlugado){
+			qtdAlugado++;
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean devolverUnidade(){
+		if(qtdAlugado > 0){
+			qtdAlugado--;
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public int getQntdEstoque() {
+		return qtdEstoque;
 	}
 
 	public int getAvaria() {
-	    return avaria;
+		return avaria;
 	}
 }

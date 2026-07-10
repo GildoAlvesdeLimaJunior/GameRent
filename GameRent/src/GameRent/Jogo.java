@@ -2,29 +2,31 @@ package GameRent;
 
 public abstract class Jogo {
 	private String nome;
-	private String plataforma;
 	private String genero;
-	private int valordiario;
-	private int classificacao;
+	private int valorDiario;
 	private int contador = 0;
+	private Plataforma plataforma;
+	private ClassificacaoEtaria classificacao;
 
-	public Jogo(String nome, String plataforma, String genero, int valordiario, int classificacao){
+	public Jogo(String nome, Plataforma plataforma, String genero, int valorDiario, ClassificacaoEtaria classificacao){
 		this.nome = nome;
 		this.plataforma = plataforma;
 		this.genero = genero;
-		this.valordiario = valordiario;
+		this.valorDiario = valorDiario;
 		this.classificacao = classificacao;
 	}
-	
+
+	public abstract boolean isDisponivel();
+
 	public void incrementarContador() {
-	    this.contador++;
+		this.contador++;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public String getPlataforma() {
+	public Plataforma getPlataforma() {
 		return plataforma;
 	}
 
@@ -32,11 +34,11 @@ public abstract class Jogo {
 		return genero;
 	}
 
-	public int getValordiario() {
-		return valordiario;
+	public int getValorDiario() {
+		return valorDiario;
 	}
 
-	public int getClassificacao() {
+	public ClassificacaoEtaria getClassificacao() {
 		return classificacao;
 	}
 

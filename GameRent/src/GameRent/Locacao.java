@@ -35,10 +35,11 @@ public class Locacao {
 	}
 	// Faz realmente sentindo deixar o calculo de desconto aqui? por que tecnicamente, isso nao pertence de forma exclusiva para o cliente premium?
 	public double calcularDesconto(){
-		
+		return cliente.calcularDesconto(calcularValorBase());
 	}
-	// nao consegui pensar em como fazer
+
 	public double calcularValorComDesconto(){
+		return calcularValorBase() - calcularDesconto();
 	}
 	
 	public double calcularMulta(){

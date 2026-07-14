@@ -67,13 +67,20 @@ public class Locacao {
 	public double registrarDevolucao(){
 		this.cliente.setJogoAlugado(null);
 		this.status = StatusLocacao.DEVOLVIDO;
+		if (jogo instanceof JogoFisico) {
+			((JogoFisico) jogo).devolverUnidade();
+		}
 		return calcularValorFinal();
 	}
 
-	public double registrarDevolucao(boolean arranhado){ // sobrecarga de funcoes, se essa for escolhida entao a midia é fisica
+	public double registrarDevolucao(boolean arranhado){
+		if (!(jogo instanceof JogoFisico)) {
+			return registrarDevolucao();
+		}
 		this.danificado = true;
 		this.status = StatusLocacao.DEVOLVIDO;
 		this.cliente.setJogoAlugado(null);
+		((JogoFisico) jogo).devolverUnidade();
 		return calcularValorFinal();
 	}
 }

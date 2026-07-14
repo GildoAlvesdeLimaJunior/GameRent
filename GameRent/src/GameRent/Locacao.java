@@ -60,7 +60,7 @@ public class Locacao {
 	}
 	
 	public double calcularValorFinal(){
-		double valorFinal = calcularDesconto() + calcularMulta() + (jogo.getValorDiario() * cliente.getPrazoDias());
+		double valorFinal = calcularValorComDesconto() + calcularMulta() + calcularTaxaDano();
 		return  valorFinal;
 	}
 

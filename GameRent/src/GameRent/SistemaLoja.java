@@ -4,7 +4,7 @@ import java.util.*;
 public class SistemaLoja {
 	private List<Jogo> jogosCadastrados;
 	private List<Cliente> clientesCadastrados;
-	//private List<Locacao> locacoesRegistradas; (preciso que a pessoa 2 termine sua parte)
+	private List<Locacao> locacoesRegistradas; 
 	//private Caixa caixa; (tem que criar a classe caixa primeiro ne pai)
 	public SistemaLoja() {
 		this.clientesCadastrados = new ArrayList<>();
@@ -25,6 +25,13 @@ public class SistemaLoja {
 	
 	public List<Cliente> getClientesCadastrados(){
 		return this.clientesCadastrados;
+	}
+	public void registrarLocacao(Locacao locacao) {
+	    this.locacoesRegistradas.add(locacao);
+	}
+
+	public List<Locacao> getLocacoesRegistradas() {
+	    return this.locacoesRegistradas;
 	}
 	
 	public List<Jogo> filtrarPorNome(String nome) {
@@ -55,5 +62,23 @@ public class SistemaLoja {
 			}
 		}
 		return resultado;
+	}
+	public List<Locacao> locacoesAtivas(Cliente cliente) {
+	    List<Locacao> resultado = new ArrayList<>();
+	    for (Locacao locacao : this.locacoesRegistradas) {
+	        if (locacao.getCliente() == cliente && locacao.getStatus() == StatusLocacao.ATIVO) {
+	            resultado.add(locacao);
+	        }
+	    }
+	    return resultado;
+	}
+	public List<Locacao> historicoLocacoes(Cliente cliente) {
+	    List<Locacao> resultado = new ArrayList<>();
+	    for (Locacao locacao : this.locacoesRegistradas) {
+	        if (locacao.getCliente() == cliente) {
+	            resultado.add(locacao);
+	        }
+	    }
+	    return resultado;
 	}
 }

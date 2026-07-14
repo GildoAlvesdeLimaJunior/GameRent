@@ -15,18 +15,22 @@ public class Locacao {
 	private double valorPago;
 	private boolean danificado;
 	private double multaDanificado = 20; 	// multa por danificação (sujeito a alterações posteriores)
-	private double multaAtraso = 5; 		// multa por atraso (sujeito a alterações posteriores)
+	private double multaAtraso = 5; // multa por atraso (sujeito a alterações posteriores)
 	
 	public Locacao(Cliente cliente ,Jogo jogo, int prazoDias) {
 		this.cliente = cliente;
 		this.jogo = jogo;
 		this.prazoDias = prazoDias;
-		this.cliente.setJogoAlugado(jogo);
-		this.cliente.setPrazoDias(prazoDias);
 		this.dataInicio = LocalDate.now(); 								// aqui vai cravar o dia que alugou
 		this.dataPrevistaParaEntrega = dataInicio.plusDays(prazoDias);	// aqui crava o dia que tem que devolver
 		this.status = StatusLocacao.ATIVO;
-    }
+		this.jogo.incrementarContador(); // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
+		if (jogo instanceof JogoFisico) {
+	        ((JogoFisico) jogo).alugarUnidade();
+	    } else if (jogo instanceof JogoDigital) {
+	        ((JogoDigital) jogo).reservarAcesso();
+	    }
+	}
 
 	// valor base pode ser resgatado tanto para o cliente comum quanto para o cliente premium, o que muda, é para o cliente premium
 	public double calcularValorBase(){
@@ -65,7 +69,6 @@ public class Locacao {
 	}
 
 	public double registrarDevolucao(){
-		this.cliente.setJogoAlugado(null);
 		this.status = StatusLocacao.DEVOLVIDO;
 		if (jogo instanceof JogoFisico) {
 			((JogoFisico) jogo).devolverUnidade();
@@ -79,8 +82,27 @@ public class Locacao {
 		}
 		this.danificado = true;
 		this.status = StatusLocacao.DEVOLVIDO;
-		this.cliente.setJogoAlugado(null);
 		((JogoFisico) jogo).devolverUnidade();
 		return calcularValorFinal();
+	}
+	
+	public Cliente getCliente() {
+	    return cliente;
+	}
+
+	public Jogo getJogo() {
+	    return jogo;
+	}
+
+	public StatusLocacao getStatus() {
+	    return status;
+	}
+
+	public LocalDate getDataInicio() {
+	    return dataInicio;
+	}
+
+	public LocalDate getDataPrevistaParaEntrega() {
+	    return dataPrevistaParaEntrega;
 	}
 }

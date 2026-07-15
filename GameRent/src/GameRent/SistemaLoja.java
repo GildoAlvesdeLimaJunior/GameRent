@@ -81,4 +81,10 @@ public class SistemaLoja {
 	    }
 	    return resultado;
 	}
+	
+	public List<Jogo> rankingMaisAlugados() {
+	    List<Jogo> ranking = new ArrayList<>(this.jogosCadastrados); // cópia, pra não bagunçar a lista original
+	    ranking.sort((jogo1, jogo2) -> jogo2.getContador() - jogo1.getContador());
+	    return ranking;
+	}
 }

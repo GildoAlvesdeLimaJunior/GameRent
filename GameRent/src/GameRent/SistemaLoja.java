@@ -9,6 +9,7 @@ public class SistemaLoja {
 	public SistemaLoja() {
 		this.clientesCadastrados = new ArrayList<>();
 		this.jogosCadastrados = new ArrayList<>();
+		this.locacoesRegistradas = new ArrayList<>();
 	}
 	
 	public void adicionarJogo(Jogo jogo) {
@@ -58,6 +59,15 @@ public class SistemaLoja {
 		List<Jogo> resultado = new ArrayList<>();
 		for(Jogo jogo : this.jogosCadastrados) {
 			if(jogo.getPlataforma() == plataforma) {
+				resultado.add(jogo);
+			}
+		}
+		return resultado;
+	}
+	public List<Jogo> buscaPorClassificacao (ClassificacaoEtaria classificacao){
+		List<Jogo> resultado = new ArrayList<>();
+		for (Jogo jogo : this.jogosCadastrados) {
+			if(jogo.getClassificacao() == classificacao ) {
 				resultado.add(jogo);
 			}
 		}

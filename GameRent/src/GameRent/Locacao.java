@@ -16,6 +16,7 @@ public class Locacao {
 	private boolean danificado;
 	private double multaDanificado = 20; 	// multa por danificação (sujeito a alterações posteriores)
 	private double multaAtraso = 5; // multa por atraso (sujeito a alterações posteriores)
+	private boolean bonusFidelidade = false; // Se esse campo for true o valor base será sempre 0.0 por causa do bonus de fidelidade do cliente
 	
 	public Locacao(Cliente cliente ,Jogo jogo, int prazoDias) {
 		this.cliente = cliente;
@@ -30,11 +31,20 @@ public class Locacao {
 	    } else if (jogo instanceof JogoDigital) {
 	        ((JogoDigital) jogo).reservarAcesso();
 	    }
+	    this.bonusFidelidade=cliente.getFidelidade().podeResgatarLocacaoGratis();
+		if(bonusFidelidade){
+			cliente.getFidelidade().resgatarLocacaoGratis();
+		}
 	}
-
+	public boolean getBonusFidelidade(){
+		return this.bonusFidelidade;
+	}
 	// valor base pode ser resgatado tanto para o cliente comum quanto para o cliente premium, o que muda, é para o cliente premium
 	public double calcularValorBase(){
 		double valorBase = this.jogo.getValorDiario()* this.prazoDias;
+		if(bonusFidelidade){
+			return 0.0;
+		}
 		return valorBase;
 	}
 	// Faz realmente sentindo deixar o calculo de desconto aqui? por que tecnicamente, isso nao pertence de forma exclusiva para o cliente premium?
@@ -73,6 +83,7 @@ public class Locacao {
 		if (jogo instanceof JogoFisico) {
 			((JogoFisico) jogo).devolverUnidade();
 		}
+		cliente.getFidelidade().acumularPonto();
 		return calcularValorFinal();
 	}
 

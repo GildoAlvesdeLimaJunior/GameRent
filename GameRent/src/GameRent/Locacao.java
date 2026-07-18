@@ -42,19 +42,35 @@ public class Locacao {
 	// valor base pode ser resgatado tanto para o cliente comum quanto para o cliente premium, o que muda, é para o cliente premium
 	public double calcularValorBase(){
 		double valorBase = this.jogo.getValorDiario()* this.prazoDias;
-		if(bonusFidelidade){
-			return 0.0;
-		}
+		//if(bonusFidelidade){
+		//	return 0.0;
+		//}
 		return valorBase;
 	}
 	// Faz realmente sentindo deixar o calculo de desconto aqui? por que tecnicamente, isso nao pertence de forma exclusiva para o cliente premium?
 	public double calcularDesconto(){
-		return cliente.calcularDesconto(calcularValorBase());
+		double val=  cliente.calcularDesconto(calcularValorBase()) + calcularPontosBonus() ;
+		if(val>calcularValorBase()){
+			return calcularValorBase();
+		}
+		return val;
 	}
-
+	
+	public double calcularPontosBonus(){
+		if(bonusFidelidade){
+			return calcularValorBase();
+		}
+		return 0.0;
+	}	
+	
 	public double calcularValorComDesconto(){
-		return calcularValorBase() - calcularDesconto();
+		double val =  calcularValorBase() - calcularDesconto();
+		if(val>=0.0){
+			return val;
+		}
+		return 0.0;
 	}
+	
 	
 	public double calcularMulta(){
 		LocalDate dataDevolucao = LocalDate.now(); // Entregado, agora veremos se esta tudo certo ou não.

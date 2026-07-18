@@ -39,7 +39,8 @@ public abstract class Cliente {
 				"nome='" + nome + '\'' +
 				", cpf='" + cpf + '\'' +
 				", email='" + email + '\'' +
-				", idade=" + idade +
+				", idade=" + idade + '\'' +
+				", pontos de fidelidade=" + fidelidade.getPontos() + 
 				'}';
 	}
 

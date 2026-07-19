@@ -8,8 +8,8 @@ public class Fidelidade{
 	public  int getPontos(){
 		return pontos;
 	}
-	public static void setMeta(int meta){
-		meta=meta;
+	public static void setMeta(int Meta){
+		meta=Meta;
 	}
 	public static int getMeta(){
 		return meta;

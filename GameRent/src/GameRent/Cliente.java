@@ -35,13 +35,7 @@ public abstract class Cliente {
 
 	@Override
 	public String toString() {
-		return "Cliente: {" +
-				"nome='" + nome + '\'' +
-				", cpf='" + cpf + '\'' +
-				", email='" + email + '\'' +
-				", idade=" + idade + '\'' +
-				", pontos de fidelidade=" + fidelidade.getPontos() + 
-				'}';
+		return "Cliente: {" + "nome= " + nome + ", cpf= " + cpf + ", email= " + email + ", idade= " + idade + ", pontos de fidelidade= " + fidelidade.getPontos() + '}';
 	}
 
 	public abstract double calcularDesconto(double valor);

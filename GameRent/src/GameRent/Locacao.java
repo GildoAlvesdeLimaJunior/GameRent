@@ -17,7 +17,7 @@ public class Locacao {
 	private double multaDanificado = 20; 	// multa por danificação (sujeito a alterações posteriores)
 	private double multaAtraso = 5; // multa por atraso (sujeito a alterações posteriores)
 	private boolean bonusFidelidade = false; // Se esse campo for true o valor base será sempre 0.0 por causa do bonus de fidelidade do cliente
-	
+
 	public Locacao(Cliente cliente ,Jogo jogo, int prazoDias) {
 		this.cliente = cliente;
 		this.jogo = jogo;
@@ -96,9 +96,11 @@ public class Locacao {
 
 	public double registrarDevolucao(){
 		this.status = StatusLocacao.DEVOLVIDO;
+
 		if (jogo instanceof JogoFisico) {
 			((JogoFisico) jogo).devolverUnidade();
 		}
+
 		cliente.getFidelidade().acumularPonto();
 		return calcularValorFinal();
 	}
@@ -132,4 +134,6 @@ public class Locacao {
 	public LocalDate getDataPrevistaParaEntrega() {
 	    return dataPrevistaParaEntrega;
 	}
+
+	public double getValorPago(){ return valorPago;}
 }

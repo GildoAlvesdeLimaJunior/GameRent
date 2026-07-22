@@ -2,8 +2,10 @@ package GameRent;
 
 public enum StatusLocacao {
     ATIVO("Ativo"),
-    DEVOLVIDO("Devolvido"),
-    ATRASADO("Atrasado");
+    ATRASADO("Atrasado"),
+    DEVOLVIDO("Devolvido normalmente"),
+    DEVOLVIDO_COM_ATRASO("Devolvido com atraso"),
+    DEVOLVIDO_COM_DANOS("Devolvido com danos");
 
     private final String descricao;
 

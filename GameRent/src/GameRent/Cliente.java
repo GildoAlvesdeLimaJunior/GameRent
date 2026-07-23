@@ -5,12 +5,14 @@ public abstract class Cliente {
 	private String cpf;
 	private String email;
 	private int idade;
-	private Fidelidade fidelidade = new Fidelidade();
+	private Fidelidade fidelidade;
 	public Cliente(String nome, String cpf, String email, int idade){
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
 		this.idade = idade;
+
+		fidelidade = new Fidelidade(this);
 	}
 
 	public Fidelidade getFidelidade(){

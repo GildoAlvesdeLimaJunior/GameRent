@@ -100,7 +100,10 @@ public class Locacao {
 		if (jogo instanceof JogoFisico) {
 			((JogoFisico) jogo).devolverUnidade();
 		}
-
+		if (jogo instanceof JogoDigital) {
+			((JogoDigital) jogo).liberarAcesso();
+		}
+		
 		cliente.getFidelidade().acumularPonto();
 		return calcularValorFinal();
 	}

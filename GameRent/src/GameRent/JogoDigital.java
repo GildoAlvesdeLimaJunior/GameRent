@@ -21,7 +21,7 @@ public class JogoDigital extends Jogo {
 		}
 	}
 
-	public boolean reservarAcesso(){
+	public boolean reservarUnidade(){
 		if(limiteAcessosSimultaneos > acessosAtivos){
 			acessosAtivos++;
 			return true;
@@ -30,7 +30,7 @@ public class JogoDigital extends Jogo {
 		}
 	}
 
-	public boolean liberarAcesso(){
+	public boolean liberarUnidade(){
 		if(acessosAtivos > 0){
 			acessosAtivos--;
 			return true;

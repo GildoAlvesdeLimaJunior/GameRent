@@ -25,8 +25,14 @@ public class Locacao {
 		this.dataInicio = LocalDate.now(); 								// aqui vai cravar o dia que alugou
 		this.dataPrevistaParaEntrega = dataInicio.plusDays(prazoDias);	// aqui crava o dia que tem que devolver
 		this.status = StatusLocacao.ATIVO;
-		this.jogo.incrementarContador(); // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
+		this.jogo.incrementarContador();
+		if (jogo==null){
+			throw new IllegalArgumentException("Erro! jogo nulo");
+		} // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
 		if (jogo instanceof JogoFisico) {
+			if (((JogoFisico) jogo).isDisponivel()){
+				throw new IllegalArgumentException("Erro! o Jogo "+jogo.getNome()+" não tem cópias disponíveis no estoque.");
+			}
 	        ((JogoFisico) jogo).alugarUnidade();
 	    } else if (jogo instanceof JogoDigital) {
 	        ((JogoDigital) jogo).reservarAcesso();

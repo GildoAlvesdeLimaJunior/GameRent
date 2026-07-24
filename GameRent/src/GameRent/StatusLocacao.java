@@ -9,11 +9,11 @@ public enum StatusLocacao {
 
     private final String descricao;
 
-    StatusLocacao(String descricao){
+    StatusLocacao(String descricao) {
         this.descricao = descricao;
     }
 
-    public String getDescricao(){
+    public String getDescricao() {
         return descricao;
     }
 }

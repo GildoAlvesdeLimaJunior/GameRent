@@ -27,9 +27,9 @@ public class Locacao {
 		this.status = StatusLocacao.ATIVO;
 		this.jogo.incrementarContador(); // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
 		if (jogo instanceof JogoFisico) {
-	        ((JogoFisico) jogo).alugarUnidade();
+	        ((JogoFisico) jogo).reservarUnidade();
 	    } else if (jogo instanceof JogoDigital) {
-	        ((JogoDigital) jogo).reservarAcesso();
+	        ((JogoDigital) jogo).reservarUnidade();
 	    }
 	    this.bonusFidelidade=cliente.getFidelidade().podeResgatarLocacaoGratis();
 		if(bonusFidelidade){
@@ -98,7 +98,7 @@ public class Locacao {
 		this.status = StatusLocacao.DEVOLVIDO;
 
 		if (jogo instanceof JogoFisico) {
-			((JogoFisico) jogo).devolverUnidade();
+			((JogoFisico) jogo).liberarUnidade();
 		}
 
 		cliente.getFidelidade().acumularPonto();
@@ -111,7 +111,7 @@ public class Locacao {
 		}
 		this.danificado = true;
 		this.status = StatusLocacao.DEVOLVIDO;
-		((JogoFisico) jogo).devolverUnidade();
+		((JogoFisico) jogo).liberarUnidade();
 		return calcularValorFinal();
 	}
 	

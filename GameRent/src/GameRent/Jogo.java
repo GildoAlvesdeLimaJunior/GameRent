@@ -3,7 +3,7 @@ package GameRent;
 public abstract class Jogo {
 	private String nome;
 	private String genero;
-	private int valorDiario;
+	private double valorDiario;
 	private int contador = 0;
 	private Plataforma plataforma;
 	private ClassificacaoEtaria classificacao;

@@ -70,8 +70,14 @@ public class Locacao {
 		else {
             this.status = StatusLocacao.DEVOLVIDO;
         }
-		if(!atrasado && !danificado){
+		if(this.status == StatusLocacao.DEVOLVIDO){
 			this.cliente.getFidelidade().acumularPonto();
+		}
+		if(jogo instanceof JogoFisico){ // liberação do jogo fisico, antes ele nao fazia a liberação lógica do jogo
+			((JogoFisico) jogo).liberarUnidade();
+		}
+		else if(jogo instanceof JogoDigital){ // liberação do jogo digital
+			((JogoDigital) jogo).liberarUnidade();
 		}
         this.valorPago = calcularValorFinal(dataDevolucao);
     }

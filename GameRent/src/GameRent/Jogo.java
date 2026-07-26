@@ -8,7 +8,7 @@ public abstract class Jogo {
 	private Plataforma plataforma;
 	private ClassificacaoEtaria classificacao;
 
-	public Jogo(String nome, Plataforma plataforma, String genero, int valorDiario, ClassificacaoEtaria classificacao){
+	public Jogo(String nome, Plataforma plataforma, String genero, double valorDiario, ClassificacaoEtaria classificacao){
 		this.nome = nome;
 		this.plataforma = plataforma;
 		this.genero = genero;
@@ -34,7 +34,7 @@ public abstract class Jogo {
 		return genero;
 	}
 
-	public int getValorDiario() {
+	public double getValorDiario() {
 		return valorDiario;
 	}
 
@@ -44,5 +44,10 @@ public abstract class Jogo {
 
 	public int getContador() {
 		return contador;
+	}
+
+	@Override
+	public String toString(){
+		return "Jogo: {" + "nome= " + nome + ",gênero= " + genero + ", valor diário= " + valorDiario + "R$, plataforma= " + plataforma + ", classificação= " + classificacao + "}";
 	}
 }

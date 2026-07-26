@@ -31,7 +31,7 @@ A game rental management system developed as a project for the **Object-Oriented
 
 ```
 Jogo (abstract)
-├── JogoFisico   (+ stock, damageLevel)
+├── JogoFisico   (+ stock)
 └── JogoDigital  (+ accessKey, sizeGB)
 
 Cliente  ──────────>  Locacao  <──────────  Jogo
@@ -39,7 +39,7 @@ Cliente  ──────────>  Locacao  <─────────�
 ```
 
 - `Jogo` — abstract base class with name, platform, genre, daily rate, and age rating
-- `JogoFisico` — extends `Jogo` adding stock control and damage level
+- `JogoFisico` — extends `Jogo` adding stock control and damage fee tracking
 - `JogoDigital` — extends `Jogo` adding access key and size in GB
 - `Cliente` — represents the customer with name, CPF, email, age, and premium status
 - `Locacao` — links customer and game with dates, values, and rental status
@@ -55,12 +55,24 @@ Cliente  ──────────>  Locacao  <─────────�
 ```
 GameRent/
 ├── src/
+│   ├── Main.java
 │   └── GameRent/
+│       ├── Caixa.java
+│       ├── ClassificacaoEtaria.java
 │       ├── Cliente.java
+│       ├── ClienteComum.java
+│       ├── ClientePremium.java
+│       ├── Fidelidade.java
 │       ├── Jogo.java
 │       ├── JogoDigital.java
 │       ├── JogoFisico.java
-│       └── Locacao.java
+│       ├── Locacao.java
+│       ├── Plataforma.java
+│       ├── Relatorio.java
+│       ├── SistemaLoja.java
+│       ├── StatusLocacao.java
+│       ├── TipoTransacao.java
+│       └── Transacao.java
 ├── .classpath
 ├── .project
 └── GameRent.iml
@@ -74,15 +86,16 @@ GameRent/
 
 ### Via terminal
 ```bash
-javac -d bin src/GameRent/*.java
-java -cp bin GameRent.<MainClass>
+javac -d bin src/GameRent/*.java src/Main.java
+java -cp bin Main
 ```
+
+> **Note:** Run from the `GameRent/` directory.
 
 ## Authors
 
 - **Gildo Alves de Lima Junior**
 - **Gilvan Alves Pastor Júnior**
-- **Tomaz Ricarto de Sousa Santos**
 - **Wesley Geilson Batista dos Santos**
 - **William Severo Gomes**
 

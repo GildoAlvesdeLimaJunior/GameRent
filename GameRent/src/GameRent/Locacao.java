@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Locacao {
-
     private Cliente cliente;
     private Jogo jogo;
     private LocalDate dataInicio;
@@ -20,9 +19,11 @@ public class Locacao {
 
     public Locacao(Cliente cliente, Jogo jogo, int diasAlugados, LocalDate dataInicio) {
         validarIdade(cliente, jogo);
+
 		if(!jogo.isDisponivel()){
 			throw new IllegalStateException("O jogo '"+ jogo.getNome() + "' não esta disponivel para locação");
-		}
+        }
+
 		this.cliente = cliente;
         this.jogo = jogo;
         this.diasAlugados = diasAlugados;
@@ -40,6 +41,7 @@ public class Locacao {
 		}
 		jogo.incrementarContador();
     }
+
 	public static void validarIdade(Cliente cliente, Jogo jogo){
 		if(cliente.getIdade() < jogo.getClassificacao().getIdadeMinima()){
 			throw new IllegalArgumentException(
@@ -92,20 +94,31 @@ public class Locacao {
 
     public double calcularValorFinal(LocalDate dataDevolucao) {
         double total = this.valorTotal + calcularMulta(dataDevolucao);
+
         if (this.danificado) {
             total += TAXA_DANO;
         }
+
         return total;
     }
 
     public Cliente getCliente() { return cliente; }
+
     public Jogo getJogo() { return jogo; }
+
     public LocalDate getDataInicio() { return dataInicio; }
+
     public LocalDate getDataPrevistaDevolucao() { return dataPrevistaDevolucao; }
+
     public LocalDate getDataDevolucao() { return dataDevolucao; }
+
     public int getDiasAlugados() { return diasAlugados; }
+
     public double getValorTotal() { return valorTotal; }
+
     public double getValorPago() { return valorPago; }
+
     public StatusLocacao getStatus() { return status; }
+
     public boolean isDanificado() { return danificado; }
 }

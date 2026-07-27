@@ -6,28 +6,24 @@ import java.time.LocalDate;
 
 public class TelaPorca extends JFrame {
 
-    // Instancia tudo direto no arquivo, sem arquitetura nenhuma
-    private Locadora locadora = new Locadora();
+    // Instância da sua classe real de gerenciamento
+    private SistemaLoja sistemaLoja = new SistemaLoja();
 
-    // Variáveis globais para os campos para poder pegar em qualquer método gambiarrado
     private JTextField txtNomeCliente, txtCpfCliente, txtIdadeCliente;
     private JTextField txtNomeJogo, txtValorJogo;
     private JComboBox<String> cbTipoCliente, cbClassificacao, cbPlataforma, cbTipoJogo;
     private JTextArea txtConsoleGiga;
 
     public TelaPorca() {
-        // Título clássico de iniciante
         setTitle("!!! SISTEMA GAMERENT v1.0 FINAL OFICIAL DEFINITIVO !!!");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Layout porcalhoso: FlowLayout ou Null (vamos misturar tudo num GridLayout tosco)
         setLayout(new FlowLayout());
 
-        // --- PAINEL 1: CORES FORTES E SEM SENTIDO ---
+        // --- PAINEL CLIENTE ---
         JPanel panelCliente = new JPanel();
-        panelCliente.setBackground(Color.YELLOW); // Amarelo marca-texto
-        panelCliente.setBorder(BorderFactory.createTitledBorder("CADASTRO DE CLIENTE (DIGITE CERTO)"));
+        panelCliente.setBackground(Color.YELLOW);
+        panelCliente.setBorder(BorderFactory.createTitledBorder("CADASTRO DE CLIENTE"));
 
         panelCliente.add(new JLabel("Nome:"));
         txtNomeCliente = new JTextField(10);
@@ -51,7 +47,7 @@ public class TelaPorca extends JFrame {
 
         add(panelCliente);
 
-        // --- PAINEL 2: OUTRA COR ALEATÓRIA ---
+        // --- PAINEL JOGO ---
         JPanel panelJogo = new JPanel();
         panelJogo.setBackground(Color.CYAN);
         panelJogo.setBorder(BorderFactory.createTitledBorder("JOGOS AQUI"));
@@ -82,32 +78,25 @@ public class TelaPorca extends JFrame {
 
         add(panelJogo);
 
-        // --- BOTOES SOLTOS DE ALUGUEL ---
+        // --- BOTÕES DE AÇÃO ---
         JPanel panelAcoes = new JPanel();
         panelAcoes.setBackground(Color.MAGENTA);
 
         JButton btnAlugar = new JButton(">>> ALUGAR AGORA <<<");
-        btnAlugar.setFont(new Font("Comic Sans MS", Font.BOLD, 16)); // Comic Sans obrigatória
-        btnAcoesAdd(panelAcoes, btnAlugar);
-
-        JButton btnDevolver = new JButton("DEVOLVER TUDO");
-        panelAcoes.add(btnDevolver);
-
-        JButton btnGeraRelatorio = new JButton("VER FATURAMENTO $$$");
-        panelAcoes.add(btnGeraRelatorio);
+        btnAlugar.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        panelAcoes.add(btnAlugar);
 
         add(panelAcoes);
 
-        // --- TEXTAREA GIGANTE PROS 'PRINTS' ---
+        // --- LOG DO SISTEMA ---
         txtConsoleGiga = new JTextArea(12, 60);
         txtConsoleGiga.setBackground(Color.BLACK);
-        txtConsoleGiga.setForeground(Color.GREEN); // Estilo Hacker do Matrix
-        txtConsoleGiga.setText("--- LOG DO SISTEMA (NAO APAGUE) ---\n");
-        JScrollPane scroll = new JScrollPane(txtConsoleGiga);
-        add(scroll);
+        txtConsoleGiga.setForeground(Color.GREEN);
+        txtConsoleGiga.setText("--- LOG DO SISTEMA ---\n");
+        add(new JScrollPane(txtConsoleGiga));
 
         // =========================================================================
-        // GAMBIARRAS NOS EVENTOS DOS BOTÕES (TUDO COM CATCH GENÉRICO E POP-UP)
+        // EVENTOS USANDO OS MÉTODOS CORRETOS DO SISTEMALOJA
         // =========================================================================
 
         btnCadCliente.addActionListener(e -> {
@@ -115,20 +104,18 @@ public class TelaPorca extends JFrame {
                 String nome = txtNomeCliente.getText();
                 String cpf = txtCpfCliente.getText();
                 int idade = Integer.parseInt(txtIdadeCliente.getText());
-                
-                Cliente c;
-                if (cbTipoCliente.getSelectedItem().equals("Premium")) {
-                    c = new ClientePremium(nome, cpf, nome + "@email.com", idade);
-                } else {
-                    c = new ClienteComum(nome, cpf, nome + "@email.com", idade);
-                }
-                
-                locadora.cadastrarCliente(c);
+
+                Cliente c = cbTipoCliente.getSelectedItem().equals("Premium")
+                        ? new ClientePremium(nome, cpf, nome + "@email.com", idade)
+                        : new ClienteComum(nome, cpf, nome + "@email.com", idade);
+
+                // Método correto da sua classe SistemaLoja
+                sistemaLoja.adicionarCliente(c);
+
                 txtConsoleGiga.append("CLIENTE CADASTRADO: " + nome + "\n");
-                JOptionPane.showMessageDialog(null, "CLIENTE SALVO COM SUCESSO DEUS ABNÇOE");
+                JOptionPane.showMessageDialog(null, "CLIENTE SALVO COM SUCESSO!");
             } catch (Exception ex) {
-                // Catch genérico mostrando o erro bruto na tela
-                JOptionPane.showMessageDialog(null, "ERRO!!! DIGITOU ALGO ERRADO: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "ERRO: " + ex.getMessage());
             }
         });
 
@@ -139,14 +126,13 @@ public class TelaPorca extends JFrame {
                 ClassificacaoEtaria classif = ClassificacaoEtaria.valueOf((String) cbClassificacao.getSelectedItem());
                 Plataforma plat = Plataforma.valueOf((String) cbPlataforma.getSelectedItem());
 
-                Jogo j;
-                if (cbTipoJogo.getSelectedItem().equals("Fisico")) {
-                    j = new JogoFisico(nome, plat, "Ação", 5, valor, classif);
-                } else {
-                    j = new JogoDigital(nome, plat, "Ação", "KEY123", valor, classif, 50);
-                }
+                Jogo j = cbTipoJogo.getSelectedItem().equals("Fisico")
+                        ? new JogoFisico(nome, plat, "Ação", 5, valor, classif)
+                        : new JogoDigital(nome, plat, "Ação", "KEY123", valor, classif, 50);
 
-                locadora.cadastrarJogo(j);
+                // Método correto da sua classe SistemaLoja
+                sistemaLoja.adicionarJogo(j);
+
                 txtConsoleGiga.append("JOGO CADASTRADO: " + nome + "\n");
                 JOptionPane.showMessageDialog(null, "JOGO FOI PRO BANCO DE DADOS!");
             } catch (Exception ex) {
@@ -156,30 +142,21 @@ public class TelaPorca extends JFrame {
 
         btnAlugar.addActionListener(e -> {
             try {
-                // Pega o primeiro cliente e o primeiro jogo que achar no sistema na tora
-                Cliente c = locadora.getClientes().get(0);
-                Jogo j = locadora.getJogos().get(0);
+                // Pega o primeiro cliente e jogo cadastrados na tora
+                Cliente c = sistemaLoja.getClientesCadastrados().get(0);
+                Jogo j = sistemaLoja.getJogosCadastrados().get(0);
 
-                Locacao loc = locadora.alugarJogo(c, j, 3, LocalDate.now());
+                Locacao loc = new Locacao(c, j, 3, LocalDate.now());
+                sistemaLoja.registrarLocacao(loc);
+
                 txtConsoleGiga.append("ALUGADO! Cliente: " + c.getNome() + " | Jogo: " + j.getNome() + " | Total: R$" + loc.getValorTotal() + "\n");
                 JOptionPane.showMessageDialog(null, "ALUGADO COM SUCESSO!");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "NAO DEU PRA ALUGAR! MOTIVO: " + ex.getMessage());
             }
         });
-
-        btnGeraRelatorio.addActionListener(e -> {
-            txtConsoleGiga.append("\n=== RELATORIO DE FATURAMENTO ===\n");
-            txtConsoleGiga.append("TOTAL GANHO: R$ " + locadora.faturamentoTotal() + "\n");
-            JOptionPane.showMessageDialog(null, "Faturamento atual: R$ " + locadora.faturamentoTotal());
-        });
     }
 
-    private void btnAcoesAdd(JPanel p, JButton b) {
-        p.add(b);
-    }
-
-    // Main rodando direto dentro da própria classe da tela
     public static void main(String[] args) {
         TelaPorca t = new TelaPorca();
         t.setVisible(true);

@@ -14,83 +14,88 @@ public class Locacao {
     private double valorPago;
     private StatusLocacao status;
     private boolean danificado;
+    private boolean bonusFidelidade;
     private static final double TAXA_MULTA_DIARIA = 2.00; 
-    private static final double TAXA_DANO = 50.00;         
+    private static final double TAXA_DANO = 50.00;        
 
     public Locacao(Cliente cliente, Jogo jogo, int diasAlugados, LocalDate dataInicio) {
+        if (jogo == null) {
+            throw new IllegalArgumentException("Erro! jogo nulo");
+        }
+        
         validarIdade(cliente, jogo);
 
-		if(!jogo.isDisponivel()){
-			throw new IllegalStateException("O jogo '"+ jogo.getNome() + "' não esta disponivel para locação");
+        if (!jogo.isDisponivel()) {
+            throw new IllegalStateException("O jogo '" + jogo.getNome() + "' não está disponível para locação");
         }
 
-		this.cliente = cliente;
-		this.jogo = jogo;
-		this.prazoDias = prazoDias;
-		this.dataInicio = LocalDate.now(); 								// aqui vai cravar o dia que alugou
-		this.dataPrevistaParaEntrega = dataInicio.plusDays(prazoDias);	// aqui crava o dia que tem que devolver
-		this.status = StatusLocacao.ATIVO;
-		this.jogo.incrementarContador();
-		if (jogo==null){
-			throw new IllegalArgumentException("Erro! jogo nulo");
-		} // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
-		if (jogo instanceof JogoFisico) {
-			if (((JogoFisico) jogo).isDisponivel()){
-				throw new IllegalArgumentException("Erro! o Jogo "+jogo.getNome()+" não tem cópias disponíveis no estoque.");
-			}
-	        ((JogoFisico) jogo).alugarUnidade();
-	    } else if (jogo instanceof JogoDigital) {
-	        ((JogoDigital) jogo).reservarAcesso();
-	    }
-	    this.bonusFidelidade=cliente.getFidelidade().podeResgatarLocacaoGratis();
-		if(bonusFidelidade){
-			cliente.getFidelidade().resgatarLocacaoGratis();
-		}
-		else if(jogo instanceof JogoDigital){
-			((JogoDigital) jogo).reservarUnidade();
-		}
-		jogo.incrementarContador();
+        this.cliente = cliente;
+        this.jogo = jogo;
+        this.diasAlugados = diasAlugados;
+        this.dataInicio = dataInicio;
+        this.dataPrevistaDevolucao = dataInicio.plusDays(diasAlugados);
+        this.status = StatusLocacao.ATIVO;
+        this.danificado = false;
+
+        this.bonusFidelidade = cliente.getFidelidade().podeResgatarLocacaoGratis();
+        if (this.bonusFidelidade) {
+            cliente.getFidelidade().resgatarLocacaoGratis();
+            this.valorTotal = 0.0;
+        } else {
+            double valorBruto = jogo.getValorDiario() * diasAlugados;
+            this.valorTotal = valorBruto - cliente.calcularDesconto(valorBruto);
+        }
+
+        this.valorPago = 0.0;
+
+        if (jogo instanceof JogoFisico) {
+            ((JogoFisico) jogo).reservarUnidade();
+        } else if (jogo instanceof JogoDigital) {
+            ((JogoDigital) jogo).reservarUnidade();
+        }
+
+        jogo.incrementarContador();
     }
 
-	public static void validarIdade(Cliente cliente, Jogo jogo){
-		if(cliente.getIdade() < jogo.getClassificacao().getIdadeMinima()){
-			throw new IllegalArgumentException(
-				"Cliente com " + cliente.getIdade() + " anos não possui idade mínima necessária (" 
+    public static void validarIdade(Cliente cliente, Jogo jogo) {
+        if (cliente.getIdade() < jogo.getClassificacao().getIdadeMinima()) {
+            throw new IllegalArgumentException(
+                "Cliente com " + cliente.getIdade() + " anos não possui idade mínima necessária (" 
                 + jogo.getClassificacao().getIdadeMinima() + " anos) para o jogo " + jogo.getNome()
-			);
-		}
-	}
+            );
+        }
+    }
 
     public void registrarDevolucao(LocalDate dataDevolucao) {
         registrarDevolucao(dataDevolucao, false);
     }
 
     public void registrarDevolucao(LocalDate dataDevolucao, boolean danificado) {
-        if(this.status != StatusLocacao.ATIVO){
-			return;
-		}
-		
-		this.dataDevolucao = dataDevolucao;
+        if (this.status != StatusLocacao.ATIVO) {
+            return;
+        }
+        
+        this.dataDevolucao = dataDevolucao;
         this.danificado = danificado;
 
         if (danificado) {
             this.status = StatusLocacao.DEVOLVIDO_COM_DANOS;
-        } 
-		else if (dataDevolucao.isAfter(dataPrevistaDevolucao)) {
+        } else if (dataDevolucao.isAfter(dataPrevistaDevolucao)) {
             this.status = StatusLocacao.DEVOLVIDO_COM_ATRASO;
-        } 
-		else {
+        } else {
             this.status = StatusLocacao.DEVOLVIDO;
         }
-		if(this.status == StatusLocacao.DEVOLVIDO){
-			this.cliente.getFidelidade().acumularPonto();
-		}
-		if(jogo instanceof JogoFisico){ // liberação do jogo fisico, antes ele nao fazia a liberação lógica do jogo
-			((JogoFisico) jogo).liberarUnidade();
-		}
-		else if(jogo instanceof JogoDigital){ // liberação do jogo digital
-			((JogoDigital) jogo).liberarUnidade();
-		}
+
+        if (this.status == StatusLocacao.DEVOLVIDO) {
+            this.cliente.getFidelidade().acumularPonto();
+        }
+
+        if (jogo instanceof JogoFisico) {
+            ((JogoFisico) jogo).liberarUnidade();
+        } else if (jogo instanceof JogoDigital) {
+            ((JogoDigital) jogo).liberarUnidade();
+        }
+
         this.valorPago = calcularValorFinal(dataDevolucao);
     }
 
@@ -102,17 +107,11 @@ public class Locacao {
         return 0.0;
     }
 
-		if (jogo instanceof JogoFisico) {
-			((JogoFisico) jogo).devolverUnidade();
-		}
-		if (jogo instanceof JogoDigital) {
-			((JogoDigital) jogo).liberarAcesso();
-		}
-		
-		cliente.getFidelidade().acumularPonto();
-		return calcularValorFinal();
-	}
-
+    public double calcularValorFinal(LocalDate dataDevolucao) {
+        double total = this.valorTotal + calcularMulta(dataDevolucao);
+        if (this.danificado) {
+            total += TAXA_DANO;
+        }
         return total;
     }
 
@@ -135,4 +134,6 @@ public class Locacao {
     public StatusLocacao getStatus() { return status; }
 
     public boolean isDanificado() { return danificado; }
+
+    public boolean isBonusFidelidade() { return bonusFidelidade; }
 }

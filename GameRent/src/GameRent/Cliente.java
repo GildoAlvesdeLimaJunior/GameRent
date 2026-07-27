@@ -11,7 +11,8 @@ public abstract class Cliente {
 		this.cpf = cpf;
 		this.email = email;
 		this.idade = idade;
-		this.fidelidade = new Fidelidade(this);
+
+		fidelidade = new Fidelidade(this);
 	}
 
 	public Fidelidade getFidelidade(){

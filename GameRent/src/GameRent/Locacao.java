@@ -25,16 +25,26 @@ public class Locacao {
         }
 
 		this.cliente = cliente;
-        this.jogo = jogo;
-        this.diasAlugados = diasAlugados;
-        this.dataInicio = dataInicio;
-        this.dataPrevistaDevolucao = dataInicio.plusDays(diasAlugados);
-        this.valorTotal = jogo.getValorDiario() * diasAlugados; 
-        this.valorPago = 0.0;
-        this.status = StatusLocacao.ATIVO;
-        this.danificado = false;
-		if(jogo instanceof JogoFisico){
-			((JogoFisico) jogo).reservarUnidade();
+		this.jogo = jogo;
+		this.prazoDias = prazoDias;
+		this.dataInicio = LocalDate.now(); 								// aqui vai cravar o dia que alugou
+		this.dataPrevistaParaEntrega = dataInicio.plusDays(prazoDias);	// aqui crava o dia que tem que devolver
+		this.status = StatusLocacao.ATIVO;
+		this.jogo.incrementarContador();
+		if (jogo==null){
+			throw new IllegalArgumentException("Erro! jogo nulo");
+		} // aqui a gente ta subindo o contador de alugueis do jogo para o ranking
+		if (jogo instanceof JogoFisico) {
+			if (((JogoFisico) jogo).isDisponivel()){
+				throw new IllegalArgumentException("Erro! o Jogo "+jogo.getNome()+" não tem cópias disponíveis no estoque.");
+			}
+	        ((JogoFisico) jogo).alugarUnidade();
+	    } else if (jogo instanceof JogoDigital) {
+	        ((JogoDigital) jogo).reservarAcesso();
+	    }
+	    this.bonusFidelidade=cliente.getFidelidade().podeResgatarLocacaoGratis();
+		if(bonusFidelidade){
+			cliente.getFidelidade().resgatarLocacaoGratis();
 		}
 		else if(jogo instanceof JogoDigital){
 			((JogoDigital) jogo).reservarUnidade();
@@ -92,12 +102,16 @@ public class Locacao {
         return 0.0;
     }
 
-    public double calcularValorFinal(LocalDate dataDevolucao) {
-        double total = this.valorTotal + calcularMulta(dataDevolucao);
-
-        if (this.danificado) {
-            total += TAXA_DANO;
-        }
+		if (jogo instanceof JogoFisico) {
+			((JogoFisico) jogo).devolverUnidade();
+		}
+		if (jogo instanceof JogoDigital) {
+			((JogoDigital) jogo).liberarAcesso();
+		}
+		
+		cliente.getFidelidade().acumularPonto();
+		return calcularValorFinal();
+	}
 
         return total;
     }

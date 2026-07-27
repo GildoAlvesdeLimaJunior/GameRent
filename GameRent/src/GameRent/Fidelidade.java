@@ -33,4 +33,7 @@ public class Fidelidade{
 		}
 		return false;
 	}
+	public Fidelidade(Cliente cliente){
+		this.cliente=cliente;
+	}
 }

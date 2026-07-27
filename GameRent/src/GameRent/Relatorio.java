@@ -50,7 +50,8 @@ public class Relatorio {
     public List<Locacao> locacoesAtivas(List<Locacao> locacoes, Cliente cliente) {
         List<Locacao> resultado = new ArrayList<>();
         for (Locacao locacao : locacoes) {
-            if (locacao.getCliente() == cliente && locacao.getStatus() == StatusLocacao.ATIVO) {
+            StatusLocacao s = locacao.getStatus();
+            if (locacao.getCliente() == cliente && (s == StatusLocacao.ATIVO || s == StatusLocacao.ATRASADO)) {
                 resultado.add(locacao);
             }
         }

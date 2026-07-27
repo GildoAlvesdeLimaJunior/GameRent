@@ -28,6 +28,10 @@ public class Locacao {
         if (!jogo.isDisponivel()) {
             throw new IllegalStateException("O jogo '" + jogo.getNome() + "' não está disponível para locação");
         }
+        if(diasAlugados <= 0 ){
+            throw new IllegalArgumentException("diasAlugados deve ser maior que zero");
+        }
+
 
         this.cliente = cliente;
         this.jogo = jogo;
@@ -71,8 +75,11 @@ public class Locacao {
     }
 
     public void registrarDevolucao(LocalDate dataDevolucao, boolean danificado) {
-        if (this.status != StatusLocacao.ATIVO) {
+        if (this.status != StatusLocacao.ATIVO && this.status != StatusLocacao.ATRASADO) {
             return;
+        }
+        if (dataDevolucao.isBefore(dataInicio)) {
+            throw new IllegalArgumentException("Data de devolução não pode ser anterior à data de início");
         }
         
         this.dataDevolucao = dataDevolucao;
@@ -131,7 +138,12 @@ public class Locacao {
 
     public double getValorPago() { return valorPago; }
 
-    public StatusLocacao getStatus() { return status; }
+    public StatusLocacao getStatus() {
+        if (status == StatusLocacao.ATIVO && LocalDate.now().isAfter(dataPrevistaDevolucao)) {
+            return StatusLocacao.ATRASADO;
+        }
+        return status;
+    }
 
     public boolean isDanificado() { return danificado; }
 

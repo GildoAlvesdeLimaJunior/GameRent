@@ -6,7 +6,7 @@ public class JogoDigital extends Jogo {
 	private int limiteAcessosSimultaneos = 5; // Exemplo
 	private int acessosAtivos = 0;
 
-	public JogoDigital(String nome, Plataforma plataforma, String genero, String chaveAcesso, int valorDiario, ClassificacaoEtaria classificacao, int tamanhoGB){
+	public JogoDigital(String nome, Plataforma plataforma, String genero, String chaveAcesso, double valorDiario, ClassificacaoEtaria classificacao, int tamanhoGB){
 		super(nome,plataforma,genero,valorDiario,classificacao);
 
 		this.chaveAcesso = chaveAcesso;
@@ -21,7 +21,7 @@ public class JogoDigital extends Jogo {
 		}
 	}
 
-	public boolean reservarAcesso(){
+	public boolean reservarUnidade(){
 		if(limiteAcessosSimultaneos > acessosAtivos){
 			acessosAtivos++;
 			return true;
@@ -30,7 +30,7 @@ public class JogoDigital extends Jogo {
 		}
 	}
 
-	public boolean liberarAcesso(){
+	public boolean liberarUnidade(){
 		if(acessosAtivos > 0){
 			acessosAtivos--;
 			return true;

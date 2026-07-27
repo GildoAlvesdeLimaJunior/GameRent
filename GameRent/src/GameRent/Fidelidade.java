@@ -4,7 +4,10 @@ public class Fidelidade{
 	private Cliente cliente;
 	private int pontos;
 	private static int meta = 5;
-	
+	public Fidelidade(Cliente cliente){
+		this.cliente = cliente;
+		this.pontos =0;
+	}
 	public  int getPontos(){
 		return pontos;
 	}

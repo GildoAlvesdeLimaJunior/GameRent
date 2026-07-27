@@ -42,6 +42,15 @@ public class Caixa {
         return saldoAtual - saldoInicial;
     }
 
+    public double getTotalDespesas(){
+        double totalDespesas = 0;
+        for(Transacao transacao : transacoes){
+            if(transacao.getValor() < 0 ){
+                totalDespesas += Math.abs(transacao.getValor());
+            }
+        }
+        return totalDespesas;
+    }
     public double getSaldoInicial() {
         return saldoInicial;
     }

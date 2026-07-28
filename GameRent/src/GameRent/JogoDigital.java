@@ -3,14 +3,15 @@ package GameRent;
 public class JogoDigital extends Jogo {
 	private String chaveAcesso;
 	private int tamanhoGB;
-	private int limiteAcessosSimultaneos = 5; // Exemplo
+	private int limiteAcessosSimultaneos; 
 	private int acessosAtivos = 0;
 
-	public JogoDigital(String nome, Plataforma plataforma, String genero, String chaveAcesso, double valorDiario, ClassificacaoEtaria classificacao, int tamanhoGB){
+	public JogoDigital(String nome, Plataforma plataforma, String genero, String chaveAcesso, double valorDiario, ClassificacaoEtaria classificacao, int tamanhoGB, int limiteAcessosSimultaneos){
 		super(nome,plataforma,genero,valorDiario,classificacao);
 
 		this.chaveAcesso = chaveAcesso;
 		this.tamanhoGB = tamanhoGB;
+		this.limiteAcessosSimultaneos = limiteAcessosSimultaneos; 
 	}
 
 	public boolean isDisponivel(){

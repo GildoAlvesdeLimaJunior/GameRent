@@ -38,7 +38,6 @@ public class TelaPrincipal extends JFrame {
         atualizarExibicaoCaixa();
     }
 
-    // 1. PAINEL DE JOGOS
     private JPanel criarPainelJogos() {
         JPanel p = new JPanel(new BorderLayout(10, 10));
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -81,8 +80,6 @@ public class TelaPrincipal extends JFrame {
         p.add(f, BorderLayout.SOUTH);
         return p;
     }
-
-    // 2. PAINEL DE CLIENTES
     private JPanel criarPainelClientes() {
         JPanel p = new JPanel(new BorderLayout(10, 10));
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -118,7 +115,6 @@ public class TelaPrincipal extends JFrame {
         return p;
     }
 
-    // 3. PAINEL DE LOCAÇÕES & DEVOLUÇÕES
     private JPanel criarPainelLocacoes() {
         JPanel p = new JPanel(new BorderLayout(10, 10));
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -148,7 +144,6 @@ public class TelaPrincipal extends JFrame {
         fLoc.add(new JLabel("Cliente:")); fLoc.add(cbLocCliente); fLoc.add(new JLabel("Jogo:")); fLoc.add(cbLocJogo);
         fLoc.add(new JLabel("Dias:")); fLoc.add(txtDias); fLoc.add(new JLabel("Início:")); fLoc.add(txtIni); fLoc.add(btnLoc);
 
-        // Form Devolução
         JPanel fDev = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         fDev.setBorder(BorderFactory.createTitledBorder("2. Registrar Devolução"));
         JTextField txtDev = new JTextField(LocalDate.now().toString(), 8);
@@ -178,7 +173,6 @@ public class TelaPrincipal extends JFrame {
         return p;
     }
 
-    // 4. PAINEL DE CAIXA
     private JPanel criarPainelCaixa() {
         JPanel p = new JPanel(new BorderLayout(8, 8));
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -213,7 +207,6 @@ public class TelaPrincipal extends JFrame {
         return p;
     }
 
-    // 5. PAINEL DE CONSULTAS
     private JPanel criarPainelConsultas() {
         JPanel p = new JPanel(new BorderLayout(8, 8));
         p.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -256,7 +249,6 @@ public class TelaPrincipal extends JFrame {
         return p;
     }
 
-    // ATUALIZAÇÕES E DADOS
     private void atualizarExibicaoCaixa() {
         if (caixa != null && relatorio != null) {
             txtCaixa.setText(relatorio.gerarRelatorioFechamento(caixa));
